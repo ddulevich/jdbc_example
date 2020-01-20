@@ -9,26 +9,18 @@ public class UsersJdbcDemo {
     static final String PASSWORD = "root";
 
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
-        Connection connection = null;
-        Statement statement = null;
-
-        System.out.println("Registering JDBC driver...");
-
-        Class.forName("com.mysql.jdbc.Driver");
-
-        System.out.println("Creating database connection...");
-        connection = DriverManager.getConnection(DATABASE_URL, USER, PASSWORD);
+        Class.forName(JDBC_DRIVER);
+        Connection connection = DriverManager.getConnection(DATABASE_URL, USER, PASSWORD);
 
         System.out.println("Executing statement...");
-        statement = connection.createStatement();
+        Statement statement = connection.createStatement();
 
-        String sql;
-        sql = "SELECT * FROM user";
+        String sql = "SELECT * FROM user";
 
         ResultSet resultSet = statement.executeQuery(sql);
 
-        System.out.println("Retrieving data from database...");
         System.out.println("\nUsers:");
+
         while (resultSet.next()) {
             int id = resultSet.getInt("id");
             String name = resultSet.getString("login");
@@ -40,7 +32,6 @@ public class UsersJdbcDemo {
             System.out.println("email: " + specialty);
         }
 
-        System.out.println("Closing connection and releasing resources...");
         resultSet.close();
         statement.close();
         connection.close();
